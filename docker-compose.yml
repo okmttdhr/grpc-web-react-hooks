@@ -7,3 +7,14 @@ services:
       dockerfile: ./DockerfileProto
     volumes:
       - .:/proto
+  server:
+    command: ./scripts/server.sh
+    build:
+      context: ./
+      dockerfile: ./DockerfileGo
+    volumes:
+      - .:/go/src/grpc-web-react-hooks
+    ports:
+      - "9090:9090"
+    depends_on:
+      - proto

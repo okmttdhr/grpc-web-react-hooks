@@ -1,0 +1,10 @@
+FROM golang:1.14.0-alpine3.11
+
+ENV GO111MODULE=on
+
+WORKDIR /go/src/grpc-web-react-hooks
+
+RUN apk add --no-cache --update \
+  git
+
+RUN go get github.com/pilu/fresh
