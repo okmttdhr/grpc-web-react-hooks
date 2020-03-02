@@ -2,4 +2,5 @@
 
 set -xe
 
-fresh
+yarn
+yarn start
