@@ -17,11 +17,32 @@ const (
 
 type server struct {
 	pb.UnimplementedGreeterServer
+	requests []*pb.HelloRequest
 }
 
-func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+func (s *server) SayHello(in *pb.HelloRequest, stream pb.Greeter_SayHelloServer) error {
 	log.Printf("Received: %v", in.GetName())
-	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
+	s.requests = append(s.requests, in)
+	for _, r := range s.requests {
+		if err := stream.Send(&pb.HelloReply{Message: "Hello " + r.GetName()}); err != nil {
+			return err
+		}
+	}
+
+	previousCount := len(s.requests)
+
+	for {
+		currentCount := len(s.requests)
+		if previousCount < currentCount {
+			log.Printf("Received new message")
+			r := s.requests[currentCount-1]
+			if err := stream.Send(&pb.HelloReply{Message: "Hello " + r.GetName()}); err != nil {
+				return err
+			}
+		}
+		previousCount = currentCount
+	}
+	return nil
 }
 
 func (s *server) SayHelloAgain(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {

@@ -42,16 +42,13 @@ export class GreeterClient {
 
   sayHello(
     request: HelloRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: HelloReply) => void) {
-    return this.client_.rpcCall(
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
       this.hostname_ +
         '/helloworld.Greeter/SayHello',
       request,
       metadata || {},
-      this.methodInfoSayHello,
-      callback);
+      this.methodInfoSayHello);
   }
 
   methodInfoSayHelloAgain = new grpcWeb.AbstractClientBase.MethodInfo(
