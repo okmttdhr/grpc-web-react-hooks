@@ -1,28 +1,27 @@
 version: '3'
 services:
   proto:
-    command: ./scripts/protoc.sh
+    command: ./proto/scripts/protoc.sh
     build:
-      context: ./
-      dockerfile: ./DockerfileProto
+      context: .
+      dockerfile: DockerfileProto
     volumes:
       - .:/proto
   server:
     command: ./scripts/server.sh
     build:
-      context: ./
-      dockerfile: ./DockerfileServer
+      context: .
+      dockerfile: DockerfileServer
     volumes:
       - ./server:/go/src/grpc-web-react-hooks
-      - ./scripts/server.sh:/go/src/grpc-web-react-hooks/scripts/server.sh
     ports:
       - "9090:9090"
     depends_on:
       - proto
   envoy:
     build:
-      context: ./
-      dockerfile: ./DockerfileEnvoy
+      context: .
+      dockerfile: DockerfileEnvoy
     ports:
       - "8080:8080"
     links:
@@ -30,12 +29,11 @@ services:
   client:
     command: ./scripts/client.sh
     build:
-      context: ./
-      dockerfile: ./DockerfileClient
+      context: .
+      dockerfile: DockerfileClient
     volumes:
       - ./client:/client
       - /client/node_modules
-      - ./scripts/client.sh:/client/scripts/client.sh
     depends_on:
       - proto
     ports:
