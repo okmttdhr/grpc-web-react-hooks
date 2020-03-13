@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
-import { MessageRequest } from "messenger/messenger_pb";
+import React from "react";
 import { MessengerClient } from "messenger/MessengerServiceClientPb";
 import { Messages } from "components/Messages";
-import { useMessages } from "./hooks";
+import { useMessages } from "./hooks/useMessages";
+import { useMessageForm } from "./hooks/useMessageForm";
+import { MessageForm } from "components/MessageForm";
 
 type Props = {
   client: MessengerClient;
@@ -10,17 +11,10 @@ type Props = {
 
 export const MessagesContainer: React.FC<Props> = ({ client }) => {
   const { messages } = useMessages(client);
-
-  useEffect(() => {
-    const req = new MessageRequest();
-    req.setMessage("message from client");
-    client.createMessage(req, null, a => {
-      console.log(a);
-    });
-  }, [client]);
-
+  const messageFormState = useMessageForm(client);
   return (
     <div>
+      <MessageForm {...messageFormState} />
       <Messages messages={messages} />
     </div>
   );
