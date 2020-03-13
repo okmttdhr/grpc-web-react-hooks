@@ -1,4 +1,4 @@
-import { MessengerClient } from "./messenger/MessengerServiceClientPb";
+import { MessengerClient } from "messenger/MessengerServiceClientPb";
 
 export type GRPCClients = {
   messengerClient: MessengerClient;

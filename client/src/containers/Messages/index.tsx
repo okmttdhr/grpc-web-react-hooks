@@ -1,9 +1,9 @@
 import React from "react";
 import { Messages } from "components/Messages";
-import { useMessages } from "./hooks/useMessages";
-import { useMessageForm } from "./hooks/useMessageForm";
 import { MessageForm } from "components/MessageForm";
 import { GRPCClients } from "gRPCClients";
+import { useMessages } from "./hooks/useMessages";
+import { useMessageForm } from "./hooks/useMessageForm";
 
 type Props = {
   clients: GRPCClients;
@@ -11,12 +11,12 @@ type Props = {
 
 export const MessagesContainer: React.FC<Props> = ({ clients }) => {
   const messengerClient = clients.messengerClient;
-  const { messages } = useMessages(messengerClient);
+  const messagesState = useMessages(messengerClient);
   const messageFormState = useMessageForm(messengerClient);
   return (
     <div>
       <MessageForm {...messageFormState} />
-      <Messages messages={messages} />
+      <Messages {...messagesState} />
     </div>
   );
 };

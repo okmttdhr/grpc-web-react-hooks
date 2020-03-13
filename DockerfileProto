@@ -4,7 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ARG PROTO_VERSION=3.11.4
 ARG GRPCWEB_VERSION=1.0.7
-ARG SERVER_OUTPUT_DIR=./server/helloworld
 
 WORKDIR /proto
 
@@ -12,13 +11,13 @@ RUN apt-get -qq update && apt-get -qq install -y \
   unzip
 
 RUN curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/\
-protoc-${PROTO_VERSION}-linux-x86_64.zip -o protoc.zip && \
+  protoc-${PROTO_VERSION}-linux-x86_64.zip -o protoc.zip && \
   unzip -qq protoc.zip && \
   cp ./bin/protoc /usr/local/bin/protoc && \
   cp -r ./include /usr/local
 
 RUN curl -sSL https://github.com/grpc/grpc-web/releases/download/${GRPCWEB_VERSION}/\
-protoc-gen-grpc-web-${GRPCWEB_VERSION}-linux-x86_64 -o /usr/local/bin/protoc-gen-grpc-web && \
+  protoc-gen-grpc-web-${GRPCWEB_VERSION}-linux-x86_64 -o /usr/local/bin/protoc-gen-grpc-web && \
   chmod +x /usr/local/bin/protoc-gen-grpc-web
 
 RUN go get -u github.com/golang/protobuf/protoc-gen-go

@@ -1,5 +1,5 @@
 import React from "react";
-import { MessagesContainer } from "./containers/Messages";
+import { MessagesContainer } from "containers/Messages";
 import { gRPCClients } from "gRPCClients";
 
 export const App = () => {
