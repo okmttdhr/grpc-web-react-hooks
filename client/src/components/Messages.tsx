@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
-type Props = {
-}
+type Props = {};
 
 export const Messages: React.FC<Props> = () => {
-  return (
-    <div>
-    </div>
-  );
-}
+  return <div></div>;
+};
