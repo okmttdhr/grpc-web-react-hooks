@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { MessengerClient } from './messenger/MessengerServiceClientPb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import { MessageRequest } from './messenger/messenger_pb';
 
 const client = new MessengerClient(`http://localhost:8080`);
 
@@ -12,6 +13,12 @@ function App() {
     const emitter$ = client.getMessages(new Empty())
     emitter$.on('data', (a) => {
       setArr((state) => state.concat([a.getMessage() + '@' + new Date().getTime() / 1000]))
+    })
+
+    const req = new MessageRequest()
+    req.setMessage('message from client')
+    client.createMessage(req, null, (a) => {
+      console.log(a);
     })
   }, [])
 

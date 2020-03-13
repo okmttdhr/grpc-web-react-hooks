@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 
@@ -21,19 +22,31 @@ type server struct {
 }
 
 func (s *server) GetMessages(_ *empty.Empty, stream pb.Messenger_GetMessagesServer) error {
+	for _, r := range s.requests {
+		if err := stream.Send(&pb.MessageResponse{Message: r.GetMessage()}); err != nil {
+			return err
+		}
+	}
+
 	previousCount := len(s.requests)
 
 	for {
 		currentCount := len(s.requests)
-		if previousCount < currentCount {
-			log.Printf("Received new message")
+		if previousCount < currentCount && currentCount > 0 {
 			r := s.requests[currentCount-1]
-			if err := stream.Send(&pb.MessageResponse{Message: "Hello " + r.GetMessage()}); err != nil {
+			log.Printf("Sent: %v", r.GetMessage())
+			if err := stream.Send(&pb.MessageResponse{Message: r.GetMessage()}); err != nil {
 				return err
 			}
 		}
 		previousCount = currentCount
 	}
+}
+
+func (s *server) CreateMessage(ctx context.Context, in *pb.MessageRequest) (*pb.MessageResponse, error) {
+	log.Printf("Received: %v", in.GetMessage())
+	s.requests = append(s.requests, in)
+	return &pb.MessageResponse{Message: in.GetMessage()}, nil
 }
 
 func main() {
