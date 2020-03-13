@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { MessageRequest } from "../../messenger/messenger_pb";
-import { MessengerClient } from "../../messenger/MessengerServiceClientPb";
+import { MessageRequest } from "messenger/messenger_pb";
+import { MessengerClient } from "messenger/MessengerServiceClientPb";
+import { Messages } from "components/Messages";
 import { useMessages } from "./hooks";
 
 type Props = {
@@ -20,9 +21,7 @@ export const MessagesContainer: React.FC<Props> = ({ client }) => {
 
   return (
     <div>
-      {messages.map(m => (
-        <div key={m}>{m}</div>
-      ))}
+      <Messages messages={messages} />
     </div>
   );
 };

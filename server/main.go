@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/okmttdhr/grpc-web-react-hooks/messenger"
@@ -43,10 +44,11 @@ func (s *server) GetMessages(_ *empty.Empty, stream pb.Messenger_GetMessagesServ
 	}
 }
 
-func (s *server) CreateMessage(ctx context.Context, in *pb.MessageRequest) (*pb.MessageResponse, error) {
-	log.Printf("Received: %v", in.GetMessage())
-	s.requests = append(s.requests, in)
-	return &pb.MessageResponse{Message: in.GetMessage()}, nil
+func (s *server) CreateMessage(ctx context.Context, r *pb.MessageRequest) (*pb.MessageResponse, error) {
+	log.Printf("Received: %v", r.GetMessage())
+	newR := &pb.MessageRequest{Message: r.GetMessage() + ": " + time.Now().Format("2006-01-02 15:04:05")}
+	s.requests = append(s.requests, newR)
+	return &pb.MessageResponse{Message: r.GetMessage()}, nil
 }
 
 func main() {

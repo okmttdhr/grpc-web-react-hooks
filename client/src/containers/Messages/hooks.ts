@@ -1,6 +1,6 @@
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import { useState, useEffect } from "react";
-import { MessengerClient } from "../../messenger/MessengerServiceClientPb";
+import { MessengerClient } from "messenger/MessengerServiceClientPb";
 
 export const useMessages = (client: MessengerClient) => {
   const [messages, setMessages] = useState<string[]>([]);
