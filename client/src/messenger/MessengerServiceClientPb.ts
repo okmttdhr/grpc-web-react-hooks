@@ -1,5 +1,5 @@
 /**
- * @fileoverview gRPC-Web generated client stub for helloworld
+ * @fileoverview gRPC-Web generated client stub for messenger
  * @enhanceable
  * @public
  */
@@ -9,11 +9,13 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import {
-  HelloReply,
-  HelloRequest} from './helloworld_pb';
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
-export class GreeterClient {
+import {
+  MessageRequest,
+  MessageResponse} from './messenger_pb';
+
+export class MessengerClient {
   client_: grpcWeb.AbstractClientBase;
   hostname_: string;
   credentials_: null | { [index: string]: string; };
@@ -32,44 +34,44 @@ export class GreeterClient {
     this.options_ = options;
   }
 
-  methodInfoSayHello = new grpcWeb.AbstractClientBase.MethodInfo(
-    HelloReply,
-    (request: HelloRequest) => {
+  methodInfoGetMessages = new grpcWeb.AbstractClientBase.MethodInfo(
+    MessageResponse,
+    (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
-    HelloReply.deserializeBinary
+    MessageResponse.deserializeBinary
   );
 
-  sayHello(
-    request: HelloRequest,
+  getMessages(
+    request: google_protobuf_empty_pb.Empty,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
-        '/helloworld.Greeter/SayHello',
+        '/messenger.Messenger/GetMessages',
       request,
       metadata || {},
-      this.methodInfoSayHello);
+      this.methodInfoGetMessages);
   }
 
-  methodInfoSayHelloAgain = new grpcWeb.AbstractClientBase.MethodInfo(
-    HelloReply,
-    (request: HelloRequest) => {
+  methodInfoCreateMessage = new grpcWeb.AbstractClientBase.MethodInfo(
+    MessageResponse,
+    (request: MessageRequest) => {
       return request.serializeBinary();
     },
-    HelloReply.deserializeBinary
+    MessageResponse.deserializeBinary
   );
 
-  sayHelloAgain(
-    request: HelloRequest,
+  createMessage(
+    request: MessageRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: HelloReply) => void) {
+               response: MessageResponse) => void) {
     return this.client_.rpcCall(
       this.hostname_ +
-        '/helloworld.Greeter/SayHelloAgain',
+        '/messenger.Messenger/CreateMessage',
       request,
       metadata || {},
-      this.methodInfoSayHelloAgain,
+      this.methodInfoCreateMessage,
       callback);
   }
 

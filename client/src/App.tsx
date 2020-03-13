@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { GreeterClient } from './HelloworldServiceClientPb';
-import { HelloRequest } from './helloworld_pb';
+import { MessengerClient } from './messenger/MessengerServiceClientPb';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
-const client = new GreeterClient(`http://localhost:8080`);
+const client = new MessengerClient(`http://localhost:8080`);
 
 function App() {
   const [arr, setArr] = useState(['start'])
 
   useEffect(() => {
-    const req = new HelloRequest()
-    req.setName('message from client')
-    const emitter$ = client.sayHello(req)
+    const emitter$ = client.getMessages(new Empty())
     emitter$.on('data', (a) => {
       setArr((state) => state.concat([a.getMessage() + '@' + new Date().getTime() / 1000]))
     })

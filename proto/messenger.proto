@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package messenger;
+
+service Messenger {
+  rpc GetMessages (google.protobuf.Empty) returns (stream MessageResponse) {}
+  rpc CreateMessage (MessageRequest) returns (MessageResponse) {}
+}
+
+message MessageRequest {
+  string message = 1;
+}
+
+message MessageResponse {
+  string message = 1;
+}

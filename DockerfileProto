@@ -14,7 +14,8 @@ RUN apt-get -qq update && apt-get -qq install -y \
 RUN curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/\
 protoc-${PROTO_VERSION}-linux-x86_64.zip -o protoc.zip && \
   unzip -qq protoc.zip && \
-  cp ./bin/protoc /usr/local/bin/protoc
+  cp ./bin/protoc /usr/local/bin/protoc && \
+  cp -r ./include /usr/local
 
 RUN curl -sSL https://github.com/grpc/grpc-web/releases/download/${GRPCWEB_VERSION}/\
 protoc-gen-grpc-web-${GRPCWEB_VERSION}-linux-x86_64 -o /usr/local/bin/protoc-gen-grpc-web && \
